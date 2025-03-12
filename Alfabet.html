@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szyfr przestawieniowy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        textarea {
+            font-size: 18px;
+            padding: 10px;
+            width: 80%;
+            height: 100px;
+        }
+        #output {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Podaj tekst do przekształcenia</h2>
+    <textarea id="inputField" oninput="convertText()"></textarea>
+    <div id="output"></div>
+
+    <script>
+        function convertText() {
+            const input = document.getElementById("inputField").value.toLowerCase();
+            const outputDiv = document.getElementById("output");
+
+            const alphabet = "abcdefghijklmnoprstuwyzźż"; // Bez "v" i "x"
+            const specialCases = { 
+                "ą": "d²", "ć": "f²", "ę": "h²", "ń": "q²", 
+                "ś": "w²", "ł": "o²", "ó": "r²",
+                "z": "A", "ź": "A³", "ż": "A²"
+            };
+
+            let result = "";
+
+            for (let char of input) {
+                if (specialCases[char]) {
+                    result += specialCases[char];
+                } else {
+                    let index = alphabet.indexOf(char);
+                    if (index !== -1) {
+                        let newIndex = (index + 3) % alphabet.length;
+                        result += alphabet[newIndex];
+                    } else {
+                        result += char; // Pozostawia znaki interpunkcyjne i spacje
+                    }
+                }
+            }
+
+            outputDiv.textContent = result;
+        }
+    </script>
+
+</body>
+</html>
+
+
+
